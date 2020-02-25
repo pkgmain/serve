@@ -27,5 +27,10 @@ func main() {
 	})
 
 	log.Println("Starting server...")
-	log.Fatal(http.ListenAndServe(":3000", router))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+	port = ":" + port
+	log.Fatal(http.ListenAndServe(port, router))
 }
