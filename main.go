@@ -9,10 +9,15 @@ import (
 )
 
 func main() {
+	log.Println("Starting server...")
 	router := chi.NewRouter()
 
 	static := "./static"
+
+	log.Println("Creating file server...")
 	fs := http.FileServer(http.Dir(static))
+
+	log.Println("Mapping routes...")
 	router.Get("/*", func(w http.ResponseWriter, r *http.Request) {
 		if _, err := os.Stat(static + r.RequestURI); os.IsNotExist(err) {
 			http.StripPrefix(r.RequestURI, fs).ServeHTTP(w, r)
@@ -21,5 +26,6 @@ func main() {
 		}
 	})
 
+	log.Println("Starting server...")
 	log.Fatal(http.ListenAndServe(":3000", router))
 }
